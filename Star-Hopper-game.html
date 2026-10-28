@@ -430,6 +430,7 @@ h1{font-size:clamp(2.6rem,10vw,4rem);line-height:.95;margin:0 0 10px;font-weight
       </form>
       <p class="small-note" id="lstatus">Connecting to the cloud…</p>
       <button class="link-btn" id="offlineBtn" hidden>Play on this device without an account</button>
+      <p><button class="act small alt lang-btn">🇳🇴 Norsk</button></p>
     </div>
   </section>
 
@@ -451,7 +452,7 @@ h1{font-size:clamp(2.6rem,10vw,4rem);line-height:.95;margin:0 0 10px;font-weight
 
   <section id="map" class="screen scroll" hidden>
     <div class="inner">
-      <div class="userbar"><button class="act small" id="toHub">🏡 Village</button><button class="act small alt" id="mapDiff">🎯 Difficulty</button><button class="act small alt" id="mapSave">💾 Save code</button><span id="whoami"></span><span id="syncState"></span><button class="link-btn" id="logout">Log out</button></div>
+      <div class="userbar"><button class="act small" id="toHub">🏡 Village</button><button class="act small alt lang-btn">🇳🇴 Norsk</button><button class="act small alt" id="mapDiff">🎯 Difficulty</button><button class="act small alt" id="mapSave">💾 Save code</button><span id="whoami"></span><span id="syncState"></span><button class="link-btn" id="logout">Log out</button></div>
       <h1>Star Hopper</h1>
       <p class="lead">Hop across seventeen planets. Glowing gates block the path, and each one has a question or a puzzle. Collect star bits and building materials, then spend them on your own home base.</p>
       <button class="hopper-card" id="openCustom">
@@ -508,6 +509,7 @@ h1{font-size:clamp(2.6rem,10vw,4rem);line-height:.95;margin:0 0 10px;font-weight
     <div class="inner">
       <div class="cust-top">
         <button class="act small" id="custDone">Done</button>
+        <button class="act small alt lang-btn">🇳🇴 Norsk</button>
         <span class="pill" id="wallet"></span>
       </div>
       <div class="preview-wrap"><canvas id="preview" aria-label="Your hopper. Tap to make it jump."></canvas></div>
@@ -623,6 +625,225 @@ h1{font-size:clamp(2.6rem,10vw,4rem);line-height:.95;margin:0 0 10px;font-weight
 <script>
 (function(){
 "use strict";
+/* ================= Language: English / Norsk ================= */
+const LANG = (() => { try { const v = localStorage.getItem("star-hopper-lang"); if(v === "no" || v === "en") return v; } catch(e){} return /^(nb|no|nn)\b/i.test(navigator.language || "") ? "no" : "en"; })();
+document.documentElement.lang = LANG === "no" ? "nb" : "en";
+const NO = {
+  // subjects, worlds and materials
+  "Math":"Matte","English":"Engelsk","Science":"Naturfag","Automation":"Automatisering","Tinkering & Arduino":"Elektronikk og Arduino","Music":"Musikk","Art":"Kunst","Geography":"Geografi",
+  "History":"Historie","Space":"Verdensrommet","Languages":"Språk","Money & Economics":"Penger og økonomi","Human Body":"Menneskekroppen","Logic & Philosophy":"Logikk og filosofi","Animals & Nature":"Dyr og natur","Chemistry":"Kjemi","Programming":"Programmering",
+  "crystals":"krystaller","scrolls":"skriftruller","seeds":"frø","gears":"tannhjul","batteries":"batterier","music notes":"noter","paint pots":"malingsbokser","compasses":"kompass","relics":"relikvier","stardust":"stjernestøv","letter tiles":"bokstavbrikker","gold coins":"gullmynter","DNA strands":"DNA-tråder","puzzle pieces":"puslebiter","leaves":"blader","test tubes":"reagensrør","floppy disks":"disketter",
+  "counting machine":"tellemaskin","word printer":"ordskriver","plant scanner":"planteskanner","robot arm":"robotarm","lamp circuit":"lampekrets","music box":"spilledåse","color mixer":"fargemikser","compass tower":"kompasstårn","time viewer":"tidskikkert","star map":"stjernekart","translator":"oversetter","coin counter":"mynteller","health scanner":"helseskanner","puzzle box":"puslespillboks","nest camera":"reirkamera","mixing machine":"blandemaskin","code compiler":"kodekompilator",
+  "The Black Hole":"Det sorte hullet","The Germ Lord":"Bakteriefyrsten","The Infinite Loop":"Den evige løkka","The Ink Kraken":"Blekk-krakenen","The Mumbler":"Mumleren","The Paradox":"Paradokset","The Smog Beast":"Smogbeistet","The Smudge":"Flekken","The Volt King":"Voltkongen","Queen Beetle":"Billedronningen","General Oblivion":"General Glemsel","Baron Debt":"Baron Gjeld","Mad Reagent":"Gale Reagens","Boulder Baron":"Steinbaronen","Elder Glim":"Gamle Glim",
+  // screens and buttons
+  "Star Hopper":"Star Hopper","Log in":"Logg inn","Log out":"Logg ut","Username":"Brukernavn","Password":"Passord","Play on this device without an account":"Spill på denne enheten uten konto",
+  "Log in to play. Your progress is saved to your account, so you can keep playing on your phone or your computer.":"Logg inn for å spille. Fremgangen din lagres på kontoen din, så du kan fortsette på mobilen eller datamaskinen.",
+  "Connecting to the cloud…":"Kobler til skyen …","Connected. Your progress saves to the cloud. ☁️":"Tilkoblet. Fremgangen din lagres i skyen. ☁️","Logging you back in…":"Logger deg inn igjen …",
+  "Type your username and password.":"Skriv brukernavn og passord.","That username and password don’t match.":"Brukernavnet og passordet passer ikke sammen.","Couldn’t reach the cloud. Check your connection and try again.":"Fikk ikke kontakt med skyen. Sjekk tilkoblingen og prøv igjen.","Cloud saving isn’t available right now.":"Skylagring er ikke tilgjengelig akkurat nå.","Checking…":"Sjekker …",
+  "Players":"Spillere","Manage players":"Administrer spillere","Create accounts and reset passwords":"Lag kontoer og nullstill passord","Create accounts for other players. Each player gets their own hopper, levels and home base.":"Lag kontoer for andre spillere. Hver spiller får sin egen hopper, sine egne nivåer og sin egen hjemmebase.",
+  "Admin (can manage players)":"Admin (kan administrere spillere)","Create player":"Lag spiller","New password":"Nytt passord","Delete":"Slett","Tap again to delete":"Trykk igjen for å slette","Loading players…":"Laster spillere …","Couldn’t load players. Try again in a moment.":"Klarte ikke å laste spillere. Prøv igjen om litt.","Hasn’t played yet":"Har ikke spilt ennå",
+  "Usernames can use letters, numbers, - and _.":"Brukernavn kan ha bokstaver, tall, - og _.","Choose a password.":"Velg et passord.","That username is already taken.":"Det brukernavnet er allerede tatt.","Couldn’t create the player. Try again.":"Klarte ikke å lage spilleren. Prøv igjen.","The game’s storage is full. Delete a player first.":"Spillets lagring er full. Slett en spiller først.","Couldn’t reach the cloud. Try again.":"Fikk ikke kontakt med skyen. Prøv igjen.",
+  "Done":"Ferdig","Save":"Lagre","Close":"Lukk","Open":"Åpne","Build":"Bygg","Play":"Spill","Customize":"Tilpass","Planets":"Planeter","Quests":"Oppdrag","Chat":"Chat","Base":"Base","Hopper":"Hopper","Jump":"Hopp","Move left":"Gå til venstre","Move right":"Gå til høyre","Next level":"Neste nivå",
+  "Back to planets":"Tilbake til planetene","Back to the village":"Tilbake til landsbyen","Go to home base":"Gå til hjemmebasen","Level complete!":"Nivå fullført!","Home base":"Hjemmebase","Galaxy explorer":"Galakseutforsker","Blink Village":"Blink-landsbyen","🏡 Village":"🏡 Landsby","Reset progress":"Nullstill fremgang","Tap again to reset all stars and levels":"Trykk igjen for å nullstille alle stjerner og nivåer",
+  "Hop across seventeen planets. Glowing gates block the path, and each one has a question or a puzzle. Collect star bits and building materials, then spend them on your own home base.":"Hopp mellom sytten planeter. Glødende porter sperrer veien, og hver av dem har et spørsmål eller en oppgave. Samle stjernebiter og byggematerialer, og bruk dem på din egen hjemmebase.",
+  "Move with ← → or A and D. Jump with Space, W or ↑. On a phone, use the buttons under the game.":"Gå med ← → eller A og D. Hopp med mellomrom, W eller ↑. På mobil bruker du knappene under spillet.",
+  "Endless random levels on every planet":"Uendelig mange tilfeldige nivåer på alle planeter","The village. Walk around, talk to the Blinks and step into portals.":"Landsbyen. Gå rundt, snakk med blinkene og gå inn i portaler.",
+  "↩ Step back":"↩ Gå tilbake","🏡 Leave level":"🏡 Forlat nivået","Change difficulty":"Bytt vanskelighetsgrad","🎯 Difficulty":"🎯 Vanskelighetsgrad",
+  "☁️ Saved":"☁️ Lagret","☁️ Saving…":"☁️ Lagrer …","⚠️ Not saved yet, retrying":"⚠️ Ikke lagret ennå, prøver igjen","⚠️ The game’s cloud storage is full":"⚠️ Spillets skylagring er full","📱 Saved on this device only":"📱 Lagret bare på denne enheten","📱 Playing on this device":"📱 Spiller på denne enheten","📱 Saved on this device":"📱 Lagret på denne enheten","This device":"Denne enheten",
+  // difficulty
+  "Choose your difficulty":"Velg vanskelighetsgrad","This sets how hard questions and puzzles are, from 1 (early elementary school) to 10 (university). Levels on each planet still get harder as you go, and you can change this any time.":"Dette bestemmer hvor vanskelige spørsmålene og oppgavene er, fra 1 (småskolen) til 10 (universitet). Nivåene på hver planet blir fortsatt vanskeligere etter hvert, og du kan endre dette når som helst.",
+  "1 · Elementary":"1 · Barneskole","10 · University":"10 · Universitet","Example question at this level":"Eksempelspørsmål på dette nivået","Difficulty from 1 to 10":"Vanskelighetsgrad fra 1 til 10",
+  "Starter · ages 6–8":"Nybegynner · 6–8 år","Easy · ages 8–9":"Lett · 8–9 år","Explorer · ages 9–10":"Utforsker · 9–10 år","Adventurer · ages 10–11":"Eventyrer · 10–11 år","Skilled · ages 11–13":"Dyktig · 11–13 år","Advanced · ages 13–14":"Viderekommen · 13–14 år","Expert · ages 14–16":"Ekspert · 14–16 år","Master · ages 16–18":"Mester · 16–18 år","Scholar · university level":"Lærd · universitetsnivå","Genius · university challenge":"Geni · universitetsutfordring",
+  // customize
+  "Character":"Figur","Head or helmet color":"Hode- eller hjelmfarge","Suit":"Drakt","Visor and screen":"Visir og skjerm","Accent color (backpack, scarf, gloves)":"Detaljfarge (ryggsekk, skjerf, hansker)","Hat":"Hatt","Face":"Ansikt","On your back":"På ryggen","Around your neck":"Rundt halsen","Trail":"Spor","Name":"Navn",
+  "Tap your hopper to make it jump.":"Trykk på hopperen din for å få den til å hoppe.","Your hopper. Tap to make it jump.":"Hopperen din. Trykk for å få den til å hoppe.","Collect star bits ✦ in levels to unlock characters, hats, wings and more.":"Samle stjernebiter ✦ i nivåene for å låse opp figurer, hatter, vinger og mer.","Wearing":"Har på","Owned":"Eid",
+  "Astronaut":"Astronaut","Alien":"Romvesen","Robot":"Robot","Bear cub":"Bjørnunge","Monster":"Monster","None":"Ingen","Antenna":"Antenne","Beanie":"Lue","Flower":"Blomst","Cat ears":"Katteører","Bow":"Sløyfe","Party hat":"Festhatt","Headphones":"Hodetelefoner","Top hat":"Flosshatt","Propeller":"Propell","Viking helmet":"Vikinghjelm","Wizard hat":"Trollmannshatt","Halo":"Glorie","Crown":"Krone",
+  "Glasses":"Briller","Mustache":"Bart","Sunglasses":"Solbriller","Ninja mask":"Ninjamaske","Jetpack":"Jetpakke","Nothing":"Ingenting","Cape":"Kappe","Wings":"Vinger","Scarf":"Skjerf","Bow tie":"Tversoversløyfe","Sparkles":"Gnister","Bubbles":"Bobler","Hearts":"Hjerter","Rainbow":"Regnbue",
+  "Moon white":"Månehvit","Rocket red":"Rakettrød","Sky blue":"Himmelblå","Leaf green":"Bladgrønn","Sun yellow":"Solgul","Nebula purple":"Tåkelilla","Mars orange":"Marsoransje","Space gray":"Romgrå","Deep blue":"Dypblå","Ocean teal":"Havturkis","Berry pink":"Bærrosa","Forest green":"Skoggrønn","Amber":"Rav","Midnight":"Midnatt","Gold":"Gull","Red":"Rød","Blue":"Blå","Green":"Grønn","Purple":"Lilla","White":"Hvit","Yellow":"Gul","Pink":"Rosa","Brown":"Brun","Peach":"Fersken","Silver":"Sølv","Charcoal":"Kullgrå","Mint":"Mint",
+  // hub
+  "💬 Talk":"💬 Snakk","✨ Enter":"✨ Gå inn","🚪 Go home":"🚪 Gå hjem","👕 Shop":"👕 Butikk","🏠 Home base":"🏠 Hjemmebase","👕 Wardrobe":"👕 Garderobe","📜 Quests":"📜 Oppdrag","💬 Chat":"💬 Chat","Tap a Blink to walk to them.":"Trykk på en blink for å gå dit.","Talk to Elder Glim first":"Snakk med Gamle Glim først","✅ All quests done":"✅ Alle oppdrag fullført","Ready!":"Klar!",
+  "Chat works when you play online with other players in the village.":"Chatten virker når du spiller på nett med andre spillere i landsbyen.","Nobody else is in the village right now, but you can still say something!":"Ingen andre er i landsbyen akkurat nå, men du kan fortsatt si noe!",
+  "Hi! 👋":"Hei! 👋","Want to team up?":"Vil du samarbeide?","Follow me!":"Følg meg!","Nice hat! 🎩":"Fin hatt! 🎩","I beat a boss! 🏆":"Jeg slo en boss! 🏆","Which level are you on?":"Hvilket nivå er du på?","Good job! ⭐":"Bra jobba! ⭐","Let’s go to a portal!":"Kom, vi går til en portal!","Be right back":"Straks tilbake","See you! 👋":"Ha det! 👋",
+  "Okay!":"Ok!","Yay!":"Hurra!","Thanks!":"Takk!","Bye!":"Ha det!","Stop":"Stopp","Not now":"Ikke nå","Maybe later":"Kanskje senere","Let’s fix it!":"La oss fikse det!","I’ll help!":"Jeg hjelper deg!","Here you go!":"Vær så god!","Yes I did!":"Ja, det gjorde jeg!","Finish ✓":"Ferdig ✓","Next question":"Neste spørsmål","Try another":"Prøv en annen","Practice 3 questions":"Øv på 3 spørsmål","Go to my base":"Gå til basen min","Choose a level":"Velg et nivå","∞ Explore":"∞ Utforsk",
+  "Meet Elder Glim":"Møt Gamle Glim","Help 3 Blinks":"Hjelp 3 blinker","Build 3 buildings at your base":"Bygg 3 bygninger på basen din","Defeat any boss":"Beseire en boss",
+  "Welcome, hero! I’m Elder Glim. We Blinks used to fix everything with our clever machines… but a glitch storm broke them all, and now we can’t remember how they work! Every Blink in the village needs help with a different subject. Look for the ! above their heads.":"Velkommen, helt! Jeg er Gamle Glim. Vi blinker pleide å fikse alt med de smarte maskinene våre … men en feilstorm ødela dem alle, og nå husker vi ikke hvordan de virker! Hver blink i landsbyen trenger hjelp med et eget fag. Se etter ! over hodene deres.",
+  "Thank you! Here’s a little something to get you started. Go and find a Blink with a ! above its head.":"Tusen takk! Her er en liten ting for å komme i gang. Finn en blink med ! over hodet.",
+  "Please help 3 different Blinks in the village. Look for the ! above their heads.":"Hjelp 3 forskjellige blinker i landsbyen. Se etter ! over hodene deres.","Three Blinks are smiling again! The village is getting brighter.":"Tre blinker smiler igjen! Landsbyen blir lysere.",
+  "Every hero needs a home. Build 3 buildings at your home base. The cottage by the south path leads there.":"Alle helter trenger et hjem. Bygg 3 bygninger på hjemmebasen din. Huset ved stien i sør tar deg dit.","What a lovely base! You can see it glowing from here.":"For en flott base! Den lyser helt hit.",
+  "The glitch storms come from the bosses at level 20 of each planet. Defeat any one of them!":"Feilstormene kommer fra bossene på nivå 20 på hver planet. Beseir en av dem!","You did it! From now on you are a true Village Hero. ⭐":"Du klarte det! Fra nå av er du en ekte landsbyhelt. ⭐",
+  "You are a true Village Hero! Keep exploring the planets and helping the Blinks.":"Du er en ekte landsbyhelt! Fortsett å utforske planetene og hjelpe blinkene.","It works again! You’re amazing!":"Den virker igjen! Du er fantastisk!","Perfect, that’s exactly what I needed!":"Perfekt, det var akkurat det jeg trengte!","The noises stopped. You’re a real hero!":"Lydene stoppet. Du er en ekte helt!","Wow, you’re getting really good at this!":"Wow, du begynner å bli skikkelig god på dette!","You did it! I knew you could.":"Du klarte det! Jeg visste du kunne.","Great practice! Come back any time.":"Bra øvd! Kom tilbake når du vil.",
+  "Reward: ✦ 5 and 15 XP":"Belønning: ✦ 5 og 15 XP",
+  // level
+  "Got the key! 🔑":"Fant nøkkelen! 🔑","Locked! Find the key 🔑":"Låst! Finn nøkkelen 🔑","Treasure! +10 ✦":"Skatt! +10 ✦","+3 ✦ first try!":"+3 ✦ på første forsøk!","Your rocket is here!":"Raketten din er her!",
+  "Grab the ? orb to break its shield":"Ta ?-kula for å knuse skjoldet","Shield down! Stomp it!":"Skjoldet er nede! Hopp på den!","Shield is back up!":"Skjoldet er tilbake!","Shielded! Grab the ? orb first":"Skjold! Ta ?-kula først","Out of hearts! The fight restarts.":"Tom for hjerter! Kampen starter på nytt.",
+  "Low gravity":"Lav tyngdekraft","Jumps go extra high!":"Du hopper ekstra høyt!","Night time":"Natt","Stay close to your light.":"Hold deg nær lyset ditt.","Star shower":"Stjerneregn","Twice the star bits!":"Dobbelt så mange stjernebiter!","Bot swarm":"Robotsverm","Lots of bots to stomp!":"Masse roboter å hoppe på!","Bouncy":"Sprettent","Springs everywhere!":"Fjærer overalt!",
+  "Open the gate":"Åpne porten","Correct!":"Riktig!","Not quite.":"Ikke helt.","✅ Correct!":"✅ Riktig!","Check":"Sjekk","Delete letter":"Slett bokstav",
+  "Choose every one that fits, then check.":"Velg alle som passer, og trykk Sjekk.","Spell the word using the tiles.":"Stav ordet med brikkene.","Program the robot to reach the gear.":"Programmer roboten slik at den når tannhjulet.","Your program is empty. Add arrows below.":"Programmet ditt er tomt. Legg til piler under.","Running…":"Kjører …","The robot stopped before reaching the gear. Add more steps and run it again.":"Roboten stoppet før den nådde tannhjulet. Legg til flere steg og kjør igjen.","Undo":"Angre","Clear":"Tøm","Up":"Opp","Down":"Ned","Left":"Venstre","Right":"Høyre",
+  "Tap a part to put it in a gap. Tap a gap to take the part out.":"Trykk på en del for å sette den i et hull. Trykk på et hull for å ta delen ut.","⚡ Power on":"⚡ Slå på strømmen","Fill both gaps so electricity can flow and the LED lights up.":"Fyll begge hullene så strømmen kan gå og lysdioden lyser.","Light the LED without burning it out.":"Få lysdioden til å lyse uten å brenne den ut.","Make the LED light up only when you press the button.":"Få lysdioden til å lyse bare når du trykker på knappen.",
+  "There’s still a gap in the loop. Fill both gaps first.":"Det er fortsatt et hull i kretsen. Fyll begge hullene først.","Both gaps are full. Tap a gap to take a part out.":"Begge hullene er fulle. Trykk på et hull for å ta ut en del.","Pop! Too much current burned out the LED. Add a resistor to limit the current.":"Pang! For mye strøm brant ut lysdioden. Legg til en motstand for å begrense strømmen.","The LED lights, but it’s on all the time. Use the push button so you can control it.":"Lysdioden lyser, men den er på hele tiden. Bruk trykknappen så du kan styre den.","Power is on. Now press the red button in the circuit!":"Strømmen er på. Trykk nå på den røde knappen i kretsen!",
+  "Metal wires conduct electricity, so the loop is closed and current reaches the LED.":"Metallledninger leder strøm, så kretsen er sluttet og strømmen når lysdioden.","The resistor limits the current so the LED glows safely without burning out.":"Motstanden begrenser strømmen, så lysdioden lyser trygt uten å brenne ut.","The button closes the loop when pressed, so current flows and the LED lights. Let go and the loop opens again. The resistor keeps the current safe.":"Knappen slutter kretsen når du trykker, så strømmen går og lysdioden lyser. Slipper du, åpnes kretsen igjen. Motstanden holder strømmen trygg.",
+  "Wire":"Ledning","Resistor":"Motstand","Rubber band":"Strikk","Wooden stick":"Trepinne","Push button":"Trykknapp","Battery":"Batteri","Empty gap":"Tomt hull","gap":"hull",
+  "Listen…":"Lytt …","Your turn! Tap the notes in order.":"Din tur! Trykk på tonene i riktig rekkefølge.","▶ Hear it again":"▶ Hør den igjen","mixing bowl":"bolle","muddy brown":"gjørmebrun","a muddy brown":"en gjørmebrun",
+  "The ⭐ shows the right spot. North is up, South is down, East is right and West is left.":"⭐ viser riktig rute. Nord er opp, sør er ned, øst er til høyre og vest er til venstre.","You followed the compass perfectly! North is up on most maps.":"Du fulgte kompasset perfekt! Nord er opp på de fleste kart.",
+  "Pop the bubble with the right answer before it floats away!":"Sprekk boblen med riktig svar før den flyter bort!","Is the answer shown correct? Get 3 right to open the gate.":"Er svaret som vises riktig? Få 3 riktige for å åpne porten.","✔ True":"✔ Sant","✘ False":"✘ Usant","Drop the answer here":"Slipp svaret her","Drag a tile into the box, or tap a tile and then tap the box.":"Dra en brikke inn i boksen, eller trykk på en brikke og så på boksen.",
+  "Tap them in order, starting with the first.":"Trykk på dem i riktig rekkefølge, fra den første.","Put these events in order, earliest first.":"Sett hendelsene i rekkefølge, den tidligste først.","Tap one on the left, then its match on the right.":"Trykk på en til venstre, og så på den som passer til høyre.","Match each element with its symbol.":"Koble hvert grunnstoff til symbolet sitt.","Match each word with its meaning.":"Koble hvert ord til betydningen.",
+  // base
+  "Collect all":"Samle inn alt","Nothing to collect yet":"Ingenting å samle inn ennå","Build here":"Bygg her","Your base":"Basen din","Making star bits…":"Lager stjernebiter …","✋ Move":"✋ Flytt","Cancel move":"Avbryt flytting","Moved!":"Flyttet!","Tap again to remove it":"Trykk igjen for å fjerne den","This building is fully upgraded. ★★★":"Denne bygningen er fullt oppgradert. ★★★",
+  "Drag to look around and use + and − to zoom. Tap an empty spot to build, or a building to play with it, collect or upgrade.":"Dra for å se deg rundt, og bruk + og − for å zoome. Trykk på en tom plass for å bygge, eller på en bygning for å leke med den, samle inn eller oppgradere.","Zoom in":"Zoom inn","Zoom out":"Zoom ut","Show the whole island":"Vis hele øya",
+  "Your home base. Tap a spot to build or a building to manage it. Drag to move around.":"Hjemmebasen din. Trykk på en plass for å bygge, eller på en bygning for å styre den. Dra for å flytte deg rundt.",
+  "Tap any spot on your island to move it there. If another building is already there, they swap places.":"Trykk på en plass på øya for å flytte den dit. Står det allerede en bygning der, bytter de plass.",
+  "Home pod":"Hjemmekapsel","Solar panel":"Solcellepanel","Space garden":"Romhage","Word library":"Ordbibliotek","Number lab":"Tallab","Robot factory":"Robotfabrikk","Concert stage":"Konsertscene","Art studio":"Kunststudio","Explorer tower":"Utforskertårn","Observatory":"Observatorium","Moon tree":"Månetre","Glow lamp":"Glødelampe","Fountain":"Fontene","Launch pad":"Utskytningsrampe","Path":"Sti",
+  "Tinker workbench":"Snekkerbenk","Telescope":"Teleskop","History museum":"Historiemuseum","Language café":"Språkkafé","Savings bank":"Sparebank","Fitness park":"Treningspark","Puzzle tower":"Puslespilltårn","Pet habitat":"Kjæledyrhage","Chemistry set":"Kjemisett","Computer lab":"Datarom",
+  "Where your hopper lives.":"Her bor hopperen din.","Turns starlight into star bits.":"Gjør stjernelys om til stjernebiter.","Grows star fruit to sell.":"Dyrker stjernefrukt som kan selges.","Visitors pay to read here.":"Besøkende betaler for å lese her.","Solves sums for star bits.":"Løser regnestykker for stjernebiter.","Robots build toys to sell.":"Roboter lager leker som kan selges.","Fans pay to hear your hopper band.":"Fans betaler for å høre hopperbandet ditt.","Sells paintings to visitors.":"Selger malerier til besøkende.","Guides tours across the galaxy.":"Guider turer gjennom galaksen.","Discovers new stars. Earns the most!":"Oppdager nye stjerner. Tjener mest!","A glowing alien tree.":"Et glødende romvesentre.","Lights up your base.":"Lyser opp basen din.","A sparkly water show.":"Et glitrende vannshow.","A rocket of your very own.":"Din helt egen rakett.","A stone path tile.":"En steinhelle til stien.",
+  "An LED board that teaches binary.":"Et lysdiodebrett som lærer deg binærtall.","Find constellations and see tonight’s Moon.":"Finn stjernebilder og se kveldens måne.","A timeline and a “which came first?” game.":"En tidslinje og et «hva kom først?»-spill.","Hear phrases in six languages.":"Hør fraser på seks språk.","Grow star bits with compound interest.":"La stjernebitene vokse med rentes rente.","A jumping-jack challenge for your heart.":"En sprellemann-utfordring for hjertet.","Lights Out logic puzzles.":"Lights Out-logikkoppgaver.","Adopt and care for an animal friend.":"Adopter og ta vare på en dyrevenn.","Combine atoms to discover molecules.":"Sett sammen atomer og oppdag molekyler.","Code turtle drawings with loops.":"Kod skilpaddetegninger med løkker.",
+  // activities
+  "🎹 Piano & song maker":"🎹 Piano og sanglager","🎹 Piano":"🎹 Piano","🎼 Song maker":"🎼 Sanglager","🎨 Paint a picture":"🎨 Mal et bilde","🎲 Dice probability lab":"🎲 Terningsannsynlighet","🤖 Program a robot dance":"🤖 Programmer en robotdans","🌱 Tend the garden":"🌱 Stell hagen","📖 Word cards":"📖 Ordkort","🌍 Spin the globe":"🌍 Snurr globusen","💡 LED binary board":"💡 Binært lysbrett","🔭 Look through the telescope":"🔭 Se i teleskopet","🏛️ Explore the museum":"🏛️ Utforsk museet","☕ Language café":"☕ Språkkafé","🏦 Savings bank":"🏦 Sparebank","💪 Jumping-jack challenge":"💪 Sprellemann-utfordring","🧩 Lights Out puzzle":"🧩 Lights Out","🐾 Visit your pet":"🐾 Besøk kjæledyret ditt","🧪 Chemistry set":"🧪 Kjemisett","💻 Code a turtle drawing":"💻 Kod en skilpaddetegning",
+  "Twinkle Twinkle":"Blinke, blinke","Ode to Joy":"Ode til gleden","Hänschen klein":"Lisa gikk til skolen","Scale up":"Skala opp","▶ Play":"▶ Spill av","■ Stop":"■ Stopp","📄 Example":"📄 Eksempel","💾 Save song":"💾 Lagre sang","Song name":"Sangnavn","No saved songs yet.":"Ingen lagrede sanger ennå.","Your songs":"Sangene dine","▶ Load":"▶ Åpne","Sure?":"Sikker?","Tempo in beats per minute":"Tempo i slag per minutt","You can save up to 12 songs. Delete one first.":"Du kan lagre opptil 12 sanger. Slett en først.",
+  "Tap the squares to place notes and drums. Each column is a 16th note, so 4 columns make one beat and the whole grid is one bar. Press Play to loop it.":"Trykk på rutene for å sette toner og trommer. Hver kolonne er en sekstendedel, så 4 kolonner er ett slag og hele rutenettet er én takt. Trykk Spill av for å spille den om og om igjen.",
+  "Tap the keys, or use your keyboard (A S D F G H J K L, with W E T Y U for the black keys). Each key to the right is one semitone higher.":"Trykk på tangentene, eller bruk tastaturet (A S D F G H J K L, med W E T Y U for de svarte tangentene). Hver tangent mot høyre er ett halvtonetrinn høyere.",
+  "Thin":"Tynn","Medium":"Middels","Thick":"Tykk","💾 Save to studio":"💾 Lagre i studioet","Saved! Open the studio any time to see or change it.":"Lagret! Åpne studioet når som helst for å se eller endre det.","Tip: mix warm colors (red, orange, yellow) and cool colors (blue, green, purple) to make your picture pop.":"Tips: bland varme farger (rød, oransje, gul) og kalde farger (blå, grønn, lilla) for at bildet skal skille seg ut.",
+  "Two dice can make 36 combinations. Seven is the most likely sum (6 ways), while 2 and 12 have only 1 way each. The more you roll, the more the bars look like a triangle!":"To terninger kan gi 36 kombinasjoner. Sju er den mest sannsynlige summen (6 måter), mens 2 og 12 bare har 1 måte hver. Jo mer du kaster, jo mer ligner søylene en trekant!","Reset":"Nullstill",
+  "🔄 Spin":"🔄 Snurr","⬆️ Jump":"⬆️ Hopp","👋 Wave":"👋 Vink","➡️ Slide":"➡️ Skli","🔊 Beep":"🔊 Pip","▶ Run":"▶ Kjør","A program is a list of steps the robot follows in order. Try making a dance that repeats a pattern!":"Et program er en liste med steg som roboten følger i rekkefølge. Prøv å lage en dans som gjentar et mønster!",
+  "Plant a seed":"Plant et frø","💧 Water":"💧 Vann","Ready to harvest!":"Klar til høsting!","Harvest +6 ✦":"Høst +6 ✦","Plants take about 5 minutes to grow. Watering makes them grow faster (up to twice per plant).":"Plantene bruker omtrent 5 minutter på å vokse. Vanning får dem til å vokse fortere (opptil to ganger per plante).","Seeds need water and warmth to start growing.":"Frø trenger vann og varme for å begynne å spire.","Roots grow down to find water; the shoot grows up toward light.":"Røttene vokser ned for å finne vann, og skuddet vokser opp mot lyset.","Leaves use sunlight to make food (photosynthesis).":"Bladene bruker sollys til å lage næring (fotosyntese).","Flowers are pollinated, then turn into fruit and seeds.":"Blomstene blir pollinert og blir så til frukt og frø.",
+  "Next word ➜":"Neste ord ➜","🔊 Say it":"🔊 Si det","Tap to see what it means":"Trykk for å se hva det betyr","These words match your difficulty setting. Try using today’s word in a sentence!":"Ordene passer til vanskelighetsgraden din. Prøv å bruke dagens ord i en setning!","Speech isn’t available on this device.":"Tale er ikke tilgjengelig på denne enheten.",
+  "🌍 Spin!":"🌍 Snurr!","Spin the globe to visit a random country!":"Snurr globusen for å besøke et tilfeldig land!","🎯 Challenge me":"🎯 Utfordre meg","🎯 New challenge":"🎯 Ny utfordring","Each LED has a value. Switch them on, and the values add up. That’s how computers store numbers using only on (1) and off (0)!":"Hver lysdiode har en verdi. Slå dem på, så legges verdiene sammen. Slik lagrer datamaskiner tall med bare på (1) og av (0)!",
+  "Pick a star pattern to find it in the sky.":"Velg et stjernebilde for å finne det på himmelen.","Big Dipper":"Karlsvogna","Orion":"Orion","Cassiopeia":"Kassiopeia","Polaris":"Polaris",
+  "Part of Ursa Major, the Great Bear. The two stars at the end of the bowl point to Polaris, the North Star.":"En del av Store bjørn. De to stjernene ytterst i vogna peker mot Polaris, Nordstjernen.","Orion the Hunter, easy to see in winter. Look for the three stars in a row: his belt. Betelgeuse (top left) is a red supergiant.":"Jegeren Orion, lett å se om vinteren. Se etter de tre stjernene på rad: beltet hans. Betelgeuse (øverst til venstre) er en rød superkjempe.","A W shape on the opposite side of Polaris from the Big Dipper. It never sets when seen from Norway.":"En W-form på motsatt side av Polaris fra Karlsvogna. Den går aldri ned sett fra Norge.","Polaris, the North Star, sits almost exactly above the North Pole, so it barely moves. Sailors used it to find north.":"Polaris, Nordstjernen, står nesten rett over Nordpolen, så den flytter seg nesten ikke. Sjøfolk brukte den til å finne nord.",
+  "🌑 New moon":"🌑 Nymåne","🌒 Waxing crescent":"🌒 Voksende månesigd","🌓 First quarter":"🌓 Første kvarter","🌔 Waxing gibbous":"🌔 Voksende måne","🌕 Full moon":"🌕 Fullmåne","🌖 Waning gibbous":"🌖 Avtagende måne","🌗 Last quarter":"🌗 Siste kvarter","🌘 Waning crescent":"🌘 Avtagende månesigd",
+  "Which came first?":"Hva kom først?","Next ➜":"Neste ➜","The timeline":"Tidslinjen","History buff!":"Historieekspert!",
+  "Hello":"Hei","Thank you":"Takk","Good morning":"God morgen","How are you?":"Hvordan går det?","Goodbye":"Ha det","Please":"Vær så snill","Spanish":"Spansk","French":"Fransk","German":"Tysk","Norwegian":"Norsk","Italian":"Italiensk","Japanese":"Japansk","Latin":"Latin","Tap 🔊 to hear it. Your device’s voices decide how it sounds.":"Trykk 🔊 for å høre det. Stemmene på enheten din bestemmer hvordan det høres ut.",
+  "Deposit 10":"Sett inn 10","Deposit 50":"Sett inn 50","Withdraw all":"Ta ut alt","Not enough star bits in your wallet.":"Ikke nok stjernebiter i lommeboka.","Compound interest means you earn interest on your interest too. The longer you save, the faster it grows! (Interest stops after 48 hours away, and savings max out at ✦ 5000.)":"Rentes rente betyr at du også får rente på renten. Jo lenger du sparer, jo raskere vokser det! (Renten stopper etter 48 timer borte, og sparingen har et tak på ✦ 5000.)",
+  "Start":"Start","⬆️ Jump!":"⬆️ Hopp!","Press Start, then tap Jump! (or press Space) as fast as you can for 15 seconds.":"Trykk Start, og trykk så Hopp! (eller mellomrom) så fort du kan i 15 sekunder.","Great workout!":"Bra trening!","Rest a few minutes before your next reward.":"Hvil noen minutter før neste belønning.",
+  "New puzzle":"Ny oppgave","Puzzle solved!":"Oppgaven er løst!","Each tap flips that light and the ones next to it. Tip: tapping the same light twice undoes it, so order doesn’t matter, only which lights you tap!":"Hvert trykk snur den lampen og de ved siden av. Tips: trykker du to ganger på samme lampe, oppheves det, så rekkefølgen spiller ingen rolle, bare hvilke lamper du trykker på!",
+  "Choose a pet to adopt:":"Velg et kjæledyr å adoptere:","🍎 Feed":"🍎 Gi mat","✋ Pet":"✋ Kos","⚽ Play":"⚽ Lek","Your pet gets a little lonely when you’re away, so visit often!":"Kjæledyret ditt blir litt ensomt når du er borte, så besøk det ofte!",
+  "Rabbit":"Kanin","Fox":"Rev","Owl":"Ugle","Turtle":"Skilpadde","Squirrel":"Ekorn","Hedgehog":"Pinnsvin",
+  "Rabbits eat hay, grass and leafy greens. Their teeth never stop growing!":"Kaniner spiser høy, gress og grønne blader. Tennene deres slutter aldri å vokse!","Foxes are omnivores: they eat mice, insects and berries. They can hear mice moving under the snow.":"Rever er altetende: de spiser mus, insekter og bær. De kan høre mus som beveger seg under snøen.","Owls eat mice and insects. They can turn their heads about 270 degrees.":"Ugler spiser mus og insekter. De kan snu hodet omtrent 270 grader.","Many turtles eat plants and small animals. Some live for over 100 years.":"Mange skilpadder spiser planter og små dyr. Noen lever i over 100 år.","Squirrels eat nuts and seeds and bury them for winter.":"Ekorn spiser nøtter og frø og graver dem ned til vinteren.","Hedgehogs eat insects, worms and snails, and hibernate in winter.":"Pinnsvin spiser insekter, mark og snegler, og går i dvale om vinteren.",
+  "⚗️ Combine":"⚗️ Sett sammen","Empty tray":"Tøm brettet","(empty tray)":"(tomt brett)","Add atoms to the tray, then combine them.":"Legg atomer på brettet, og sett dem så sammen.","Try 2 H + 1 O. Can you find all 13 molecules?":"Prøv 2 H + 1 O. Klarer du å finne alle 13 molekylene?","Discovery!":"Oppdagelse!",
+  "Clear code":"Tøm koden","Wrap in a loop ×4":"Pakk inn i en løkke ×4","💾 Save program":"💾 Lagre program","Program name":"Programnavn","No saved programs yet.":"Ingen lagrede programmer ennå.","Your programs":"Programmene dine","You can save up to 12 programs. Delete one first.":"Du kan lagre opptil 12 programmer. Slett et først.","Turtle program":"Skilpaddeprogram","Something went wrong.":"Noe gikk galt.",
+  "Type Python-style turtle code, or tap a button to add a line. Commands: forward(n), back(n), left(deg), right(deg), circle(r), color(\"red\"), penup(), pendown(), width(n). Loops: for i in range(n): with the lines inside indented by 4 spaces. You can make variables like size = 10 and use math like i * 2.":"Skriv skilpaddekode i Python-stil, eller trykk på en knapp for å legge til en linje. Kommandoer: forward(n), back(n), left(grader), right(grader), circle(r), color(\"red\"), penup(), pendown(), width(n). Løkker: for i in range(n): med linjene inni rykket inn 4 mellomrom. Du kan lage variabler som size = 10 og regne som i * 2.",
+  "The lines inside a loop need to be indented.":"Linjene inni en løkke må rykkes inn.","This loop is empty. Indent the lines that should repeat.":"Denne løkka er tom. Rykk inn linjene som skal gjentas.","Write loops like: for i in range(4):":"Skriv løkker slik: for i in range(4):","Your program ran too long. Is a loop too big?":"Programmet kjørte for lenge. Er en løkke for stor?","That drawing has too many lines.":"Den tegningen har for mange streker.","That loop is too big (max 3000 repeats).":"Den løkka er for stor (maks 3000 gjentakelser).","range() needs a number, like range(4).":"range() trenger et tall, som range(4).","Put the color in quotes, like color(\"red\").":"Sett fargen i anførselstegn, som color(\"red\").","A number is missing.":"Et tall mangler.","That number is too big.":"Det tallet er for stort.","A “)” is missing.":"En «)» mangler.",
+  // map & misc
+  "Your buildings make":"Bygningene dine lager","Beat level 1":"Fullfør nivå 1","Endless levels":"Uendelige nivåer","Moving":"Flytter","🐾":"🐾"
+};
+const NO_PAT = [
+  [/^(▶|📄) (.+)$/, (m, i, a) => NO[a] ? `${i} ${NO[a]}` : null],
+  [/^(.+) gate$/, (m, a) => `${tr(a)}-port`],
+  [/^(.+) gate · (.+)$/, (m, a, b) => `${tr(a)}-port · ${({"type it":"skriv det","spell it":"stav det","sort it":"sorter det","program it":"programmer det","build it":"bygg det","play it back":"spill det av","mix it":"bland det","find it":"finn det","order it":"sorter rekkefølgen","match it":"koble sammen","pop the answer":"sprekk svaret","true or false?":"sant eller usant?","catch it":"fang det","drag the answer":"dra svaret","Jump up into the block with the right answer!":"Hopp opp i blokka med riktig svar!"})[b] || b}`],
+  [/^Level (\d+)$/, "Nivå $1"], [/^Lv (\d+)$/, "Nv $1"], [/^Depth (\d+) cleared!$/, "Dybde $1 klart!"], [/^You beat (.+)!$/, (m, a) => `Du slo ${tr(a)}!`],
+  [/^(.+) on (.+) · Level (\d+)$/, "$1 på $2 · Nivå $3"], [/^(.+) · Boss level$/, "$1 · Bossnivå"], [/^(Galaxy · )?(.+) · Depth (\d+)$/, (m, g, a, d) => `${g ? "Galakse · " : ""}${a} · Dybde ${d}`],
+  [/^(.+) · Blink Village$/, "$1 · Blink-landsbyen"], [/^(.+) · Level (\d+)$/, (m, a, l) => `${tr(a)} · Nivå ${l}`],
+  [/^(.+) · (\d+)\/(\d+) levels$/, (m, a, b, c) => `${tr(a)} · ${b}/${c} nivåer`],
+  [/^Best: depth (\d+)$/, "Beste: dybde $1"], [/^Beat level (\d+) to unlock$/, "Fullfør nivå $1 for å låse opp"], [/^Beat level (\d+) on any planet to unlock$/, "Fullfør nivå $1 på en planet for å låse opp"],
+  [/^Endless random levels on every planet · Best: depth (\d+)$/, "Uendelig mange tilfeldige nivåer på alle planeter · Beste: dybde $1"],
+  [/^✦ (\d+) star bits$/, "✦ $1 stjernebiter"], [/^✦ (\d+) ready to collect!$/, "✦ $1 klare til innsamling!"], [/^Collect all · ✦ (\d+)$/, "Samle inn alt · ✦ $1"], [/^Collect ✦ (\d+)$/, "Samle inn ✦ $1"],
+  [/^(\d+) buildings? · (.*)$/, (m, n, r) => `${n} ${n === "1" ? "bygning" : "bygninger"} · ${r}`],
+  [/^🎯 Difficulty (\d+)$/, "🎯 Vanskelighetsgrad $1"], [/^👤 (.+) · admin$/, "👤 $1 · admin"],
+  [/^Portal to (.+)$/, "Portal til $1"], [/^▶ Play level (\d+)( \(boss!\))?$/, (m, l, b) => `▶ Spill nivå ${l}${b ? " (boss!)" : ""}`],
+  [/^(.+) · (\d+) of (\d+) levels done\. (.+)$/, (m, s, a, b, t) => `${tr(s)} · ${a} av ${b} nivåer fullført. ${tr(t)}`],
+  [/^Some gates ask you to (.+)\.$/, (m, a) => "Noen porter ber deg " + ({"type the answer on a number pad":"skrive svaret på et talltastatur","spell a word with letter tiles":"stave et ord med bokstavbrikker","sort things into groups":"sortere ting i grupper","program a robot to reach a gear":"programmere en robot som skal nå et tannhjul","build a circuit that lights an LED":"bygge en krets som får en lysdiode til å lyse","play back a tune":"spille av en melodi","mix paint colors":"blande malingsfarger","follow compass directions on a map":"følge kompassretninger på et kart","put events in time order":"sette hendelser i tidsrekkefølge","put planets and stars in order":"sette planeter og stjerner i rekkefølge","match words with their meanings":"koble ord til betydningen","work out prices and change":"regne ut priser og vekslepenger","sort parts of the body":"sortere deler av kroppen","find the next number in a pattern":"finne neste tall i et mønster","sort animals into groups":"sortere dyr i grupper","match elements with their symbols":"koble grunnstoffer til symbolene sine","put lines of code in the right order":"sette kodelinjer i riktig rekkefølge"})[a] + "." ],
+  [/^Hi (.+)! Gates ask (.+) questions\. (.+)$/, (m, n, s, t) => `Hei ${n}! Portene stiller spørsmål i ${tr(s).toLowerCase()}. ${tr(t)}`],
+  [/^Hi! I’m (.+)\. Have you met Elder Glim yet\? She’s by the fountain in the middle of the village\.$/, "Hei! Jeg heter $1. Har du møtt Gamle Glim ennå? Hun står ved fontenen midt i landsbyen."],
+  [/^Fix (.+)’s (.+)$/, (m, n, g) => `Fiks ${tr(g)} til ${n}`], [/^Bring 2 (\S+) (.+)$/, (m, i, n) => `Ta med 2 ${i} ${tr(n)}`], [/^Clear level (\d+) on (.+)$/, "Fullfør nivå $1 på $2"], [/^Defeat (.+)$/, (m, a) => `Beseir ${tr(a)}`],
+  [/^Oh no, my (.+) is broken! Can you answer 3 (.+) questions to help me fix it\?$/, (m, g, s) => { const n = tr(g), D = { "spilledåse":["spilledåsen","min","den"], "kompasstårn":["kompasstårnet","mitt","det"], "stjernekart":["stjernekartet","mitt","det"], "reirkamera":["reirkameraet","mitt","det"] }[n] || [n + "en","min","den"]; return `Å nei, ${D[0]} ${D[1]} er ødelagt! Kan du svare på 3 spørsmål i ${tr(s).toLowerCase()} så jeg kan fikse ${D[2]}?`; }],
+  [/^To finish the repair I need 2 (\S+) (.+) from (.+)\. You find them in crates, on high platforms and in treasure chests\.(.*)$/, (m, i, n, p, r) => `For å bli ferdig med reparasjonen trenger jeg 2 ${i} ${tr(n)} fra ${p}. Du finner dem i kasser, på høye plattformer og i skattekister.${tr(r)}`],
+  [/^Strange noises are coming from (.+)\. Can you clear level 5 there\? Step into the (.+) portal\.$/, "Rare lyder kommer fra $1. Kan du klare nivå 5 der? Gå inn i $2-portalen."],
+  [/^More glitches on (.+)! Clear level 10 to calm them down\.$/, "Flere feil på $1! Klar nivå 10 for å roe dem ned."],
+  [/^(.+) is causing the glitch storms on (.+)! Defeat it at level (\d+)\.$/, (m, b, p, l) => `${tr(b)} lager feilstormene på ${p}! Beseir den på nivå ${l}.`],
+  [/^You beat (.+)! The whole village is cheering!$/, (m, b) => `Du slo ${tr(b)}! Hele landsbyen jubler!`],
+  [/^\(You have (\d+) of (\d+)\.\)$/, "(Du har $1 av $2.)"], [/^ ?\(You have (\d+) of (\d+)\.\)$/, " (Du har $1 av $2.)"],
+  [/^You found (\d+) (\S+) (.+)! Can I have them\?$/, (m, n, i, a) => `Du fant ${n} ${i} ${tr(a)}! Kan jeg få dem?`],
+  [/^Walk to the (.+) portal$/, "Gå til $1-portalen"], [/^Quest done! Reward: ✦ (\d+) and (\d+) XP$/, "Oppdraget er fullført! Belønning: ✦ $1 og $2 XP"],
+  [/^Thanks again, hero! Want to practice some (.+)\? I’ll give you a little reward\.$/, (m, s) => `Takk igjen, helt! Vil du øve litt på ${tr(s).toLowerCase()}? Du får en liten belønning.`],
+  [/^Question (\d+) of (\d+): (.+)$/, (m, a, b, q) => `Spørsmål ${a} av ${b}: ${tr(q)}`],
+  [/^⬆️ Level up! You’re now level (\d+)$/, "⬆️ Nytt nivå! Du er nå nivå $1"], [/^(\d+) other players? (?:is|are) in the village right now\. Pick a message to say:$/, "$1 andre er i landsbyen akkurat nå. Velg en melding:"],
+  [/^Boss level! (.+) waits at the end\.$/, (m, b) => `Bossnivå! ${tr(b)} venter på slutten.`], [/^⚠ (.+) appears!$/, (m, b) => `⚠ ${tr(b)} dukker opp!`],
+  [/^👑 (.+) · (shielded|stomp now!)$/, (m, b, s) => `👑 ${tr(b)} · ${s === "shielded" ? "skjold" : "hopp på den nå!"}`], [/^(\d+) more hits?!$/, (m, n) => `${n} treff til!`], [/^❤️ (\d+) left$/, "❤️ $1 igjen"], [/^STOMP! (\d+)$/, "HOPP! $1"],
+  [/^You beat (.+)! \+30 ✦$/, (m, b) => `Du slo ${tr(b)}! +30 ✦`],
+  [/^(.+)! (.+)$/, (m, a, b) => NO[a] && NO[b] ? `${NO[a]}! ${NO[b]}` : null],
+  [/^Rounds? (\d+) · (\d+) right so far$/, "Runde $1 · $2 riktige så langt"], [/^Round (\d+) · (\d+) right so far$/, "Runde $1 · $2 riktige så langt"],
+  [/^(\d+) out of (\d+) right\. Nice judging!$/, "$1 av $2 riktige. Bra vurdert!"], [/^You got (\d+) out of (\d+)\. You need 3 right to open the gate\.$/, "Du fikk $1 av $2. Du trenger 3 riktige for å åpne porten."],
+  [/^Yes, “(.+)” is correct\.$/, (m, a) => `Ja, «${a}» er riktig.`], [/^No, the answer is “(.+)”\.$/, (m, a) => `Nei, svaret er «${a}».`],
+  [/^❌ “(.+)” isn’t right\. The answer is “(.+)”\.$/, "❌ «$1» er ikke riktig. Svaret er «$2»."], [/^You caught “(.+)”\. The answer is “(.+)”\.(.*)$/, (m, a, b, r) => `Du fanget «${a}». Svaret er «${b}».${r ? " " + tr(r.trim()) : ""}`],
+  [/^The answer is (.+?)\. (.+)$/, (m, a, r) => `Svaret er ${a}. ${tr(r)}`], [/^The right order is: (.+)$/, "Riktig rekkefølge er: $1"], [/^The right pairs are: (.+)$/, "Riktige par er: $1"], [/^Perfect matching! (.+)$/, "Perfekt koblet! $1"],
+  [/^Listen to the (\d+)-note tune, then play it back\.$/, "Hør på melodien med $1 toner, og spill den av etterpå."], [/^The tune was (.+)\. Listen for whether each note goes up or down\.$/, "Melodien var $1. Hør om hver tone går opp eller ned."], [/^You played (.+)\. Great listening! Higher notes vibrate faster\.$/, "Du spilte $1. Godt lyttet! Høyere toner svinger fortere."],
+  [/^Pick two paint pots to make (.+)\.$/, (m, a) => `Velg to malingsbokser for å lage ${tr(a.toLowerCase()).toUpperCase()}.`],
+  [/^Start at the 🏠\. Go (.+)\. Tap where you end up\.$/, (m, a) => `Start ved 🏠. Gå ${a.replace(/ then /g, " så ").replace(/North-East/g,"nordøst").replace(/North-West/g,"nordvest").replace(/South-East/g,"sørøst").replace(/South-West/g,"sørvest").replace(/North/g,"nord").replace(/South/g,"sør").replace(/East/g,"øst").replace(/West/g,"vest")}. Trykk der du havner.`],
+  [/^Bonk! Step (\d+) hits (a wall|the edge)\. Fix that step and run it again\.$/, (m, n, w) => `Bom! Steg ${n} treffer ${w === "a wall" ? "en vegg" : "kanten"}. Fiks det steget og kjør igjen.`],
+  [/^Challenge: reach the gear in (\d+) steps or fewer\.$/, "Utfordring: nå tannhjulet på $1 steg eller færre."], [/^Bonus: can you do it in (\d+) steps\?$/, "Bonus: klarer du det på $1 steg?"],
+  [/^Your program got the robot to the gear in (\d+) steps\. A list of steps in order is called an algorithm\.(.*)$/, (m, n, r) => `Programmet ditt fikk roboten til tannhjulet på ${n} steg. En liste med steg i rekkefølge kalles en algoritme.${r.replace(/ And you used the fewest steps possible \((\d+)\)!/, " Og du brukte færrest mulig steg ($1)!").replace(/ The shortest program uses (\d+) steps\./, " Det korteste programmet bruker $1 steg.")}`],
+  [/^The robot reached the gear in (\d+) steps, but this challenge needs (\d+) or fewer\. Find a shorter path!$/, "Roboten nådde tannhjulet på $1 steg, men denne utfordringen krever $2 eller færre. Finn en kortere vei!"],
+  [/^No light\. A (.+) is an insulator, so electricity can’t flow through it\. Swap it for something metal\.$/, (m, a) => `Ikke noe lys. ${cap(tr(cap(a)).toLowerCase())} er en isolator, så strømmen kan ikke gå gjennom den. Bytt den ut med noe av metall.`],
+  [/^(.+) \+ (.+) = (.+)\. (Adding white makes a tint and adding black makes a shade\.|Nice mixing!)$/, (m, a, b, c, r) => `${a} + ${b} = ${c}. ${r === "Nice mixing!" ? "Bra blandet!" : "Hvitt gjør fargen lysere, og svart gjør den mørkere."}`],
+  [/^That made (.+)\. To make (.+), mix (.+)\.$/, "Det ble $1. For å lage $2 blander du $3."],
+  [/^(.+) built!$/, (m, a) => `${tr(a)} er bygget!`], [/^(.+) is now level (\d+)!$/, (m, a, l) => `${tr(a)} er nå på nivå ${l}!`], [/^(.+) · Level (\d+)$/, (m, a, l) => `${tr(a)} · Nivå ${l}`],
+  [/^Makes ✦ (\d+) per minute and holds up to ✦ (\d+)\.$/, "Lager ✦ $1 per minutt og har plass til ✦ $2."], [/^Makes ✦ (\d+) per minute$/, "Lager ✦ $1 per minutt"],
+  [/^Upgrade to level (\d+) · (.+)$/, "Oppgrader til nivå $1 · $2"], [/^Remove · get ✦ (\d+) back$/, "Fjern · få ✦ $1 tilbake"], [/^Removed the (.+)\. You got ✦ (\d+) back\.$/, (m, a, n) => `Fjernet ${tr(cap(a)).toLowerCase()}. Du fikk ✦ ${n} tilbake.`],
+  [/^Moving the (.+)$/, (m, a) => `Flytter ${tr(cap(a)).toLowerCase()}`], [/^You need (.+)\.$/, (m, a) => "Du trenger " + a.replace(/ more star bits/g, " stjernebiter til").replace(/ and /g, " og ").replace(/ more (.+?) from /g, (x, n) => ` ${tr(n)} til fra `) + "."],
+  [/^Your buildings make ✦ (\d+) star bits every minute, even while you’re playing levels\. Buildings also need materials from the planets: (.+)\. Find them in crates, on high platforms and in treasure chests\.$/, (m, n, l) => `Bygningene dine lager ✦ ${n} stjernebiter hvert minutt, også mens du spiller nivåer. Bygningene trenger også materialer fra planetene: ${l.replace(/([^\s,]+) ([^,]+?) on ([^,]+)/g, (x, i, nm, p) => `${i} ${tr(nm)} på ${p}`)}. Du finner dem i kasser, på høye plattformer og i skattekister.`],
+  [/^You need (\d+) more star bits for the (.+)\. Grab them in levels!$/, (m, n, a) => `Du trenger ${n} stjernebiter til for ${tr(cap(a)).toLowerCase()}. Finn dem i nivåene!`], [/^You unlocked the (.+)!$/, (m, a) => `Du låste opp ${tr(cap(a)).toLowerCase()}!`],
+  [/^(.+), owned$/, (m, a) => `${tr(a)}, eid`], [/^(.+), costs (\d+) star bits$/, (m, a, n) => `${tr(a)}, koster ${n} stjernebiter`],
+  [/^(.+) level (\d+), (\d+) of 3 stars$/, "$1 nivå $2, $3 av 3 stjerner"], [/^(.+) level (\d+), locked$/, "$1 nivå $2, låst"], [/^(.+) explore mode, endless random levels$/, "$1 utforskermodus, uendelige tilfeldige nivåer"],
+  [/^(\d+)% grown$/, "$1 % vokst"], [/^Harvested (.+)!$/, "Høstet $1!"], [/^(.+) \+(\d+) ✦$/, (m, a, n) => `${tr(a)} +${n} ✦`],
+  [/^Roll (\d+)$/, "Kast $1"], [/^(\d+) rolls\. Most common so far: (\d+)\.$/, "$1 kast. Vanligst så langt: $2."],
+  [/^📍 You landed in (.+?)! Its capital is (.+?)(?: and it’s in (.+?))?\. Countries visited: (\d+)\.$/, (m, c, k, co, n) => `📍 Du landet i ${c}! Hovedstaden er ${k}${co ? ` og landet ligger i ${({"Europe":"Europa","Asia":"Asia","Africa":"Afrika","North America":"Nord-Amerika","South America":"Sør-Amerika","Oceania":"Oseania"})[co] || co}` : ""}. Land besøkt: ${n}.`],
+  [/^Make the number (\d+)$/, "Lag tallet $1"], [/^Switch on the LEDs that add up to (\d+)\.$/, "Slå på lysdiodene som til sammen blir $1."], [/^Binary (\S+) = (\d+) in decimal = (\S+) in hex$/, "Binært $1 = $2 i titallsystemet = $3 heksadesimalt"], [/^You made (\d+) in binary!$/, "Du laget $1 i binærtall!"],
+  [/^Tonight’s Moon: (.+) \(about (\d+) days into its 29\.5-day cycle\)\.$/, (m, p, d) => `Kveldens måne: ${tr(p)} (omtrent ${d} dager inn i syklusen på 29,5 dager).`],
+  [/^(✅ Right!|❌ Not quite\.) (.+) was in (\d+), and (.+) was in (\d+)\.$/, (m, ok, a, y, b, z) => `${ok.startsWith("✅") ? "✅ Riktig!" : "❌ Ikke helt."} ${a} var i ${y}, og ${b} var i ${z}.`], [/^Relics in your collection: 🏺 (\d+)$/, "Relikvier i samlingen din: 🏺 $1"],
+  [/^Savings: ✦ (.+)$/, "Sparing: ✦ $1"], [/^Wallet: ✦ (.+)$/, "Lommebok: ✦ $1"], [/^Interest: 1% per hour, compounded\. In 24 hours, ✦ (\S+) grows to ✦ (\S+) \(× 1\.01²⁴ ≈ 1\.27\)\.$/, "Rente: 1 % per time med rentes rente. På 24 timer vokser ✦ $1 til ✦ $2 (× 1,01²⁴ ≈ 1,27)."], [/^You withdrew ✦ (\d+)\.$/, "Du tok ut ✦ $1."],
+  [/^Reps: (\d+)$/, "Sprellemenn: $1"], [/^(\d+) jumping jacks! Your heart rate went up to about (\d+) bpm\. Exercise makes your heart pump faster to send more oxygen to your muscles\.$/, "$1 sprellemenn! Pulsen din gikk opp til omtrent $2 slag i minuttet. Trening får hjertet til å pumpe fortere for å sende mer oksygen til musklene."],
+  [/^Moves: (\d+)\. Turn all the lights off\.$/, "Trekk: $1. Slå av alle lampene."], [/^Solved in (\d+) moves! 🎉$/, "Løst på $1 trekk! 🎉"],
+  [/^(.+) · happiness$/, (m, a) => `${tr(a)} · glede`], [/^(Yum!|❤️|Wheee!) (.+) is (super happy|happy|a bit lonely)\.$/, (m, s, p, h) => `${s === "Yum!" ? "Nam!" : s === "Wheee!" ? "Jippi!" : s} ${tr(p)} er ${h === "super happy" ? "superglad" : h === "happy" ? "glad" : "litt ensom"}.`],
+  [/^(\S+) (Rabbit|Fox|Owl|Turtle|Squirrel|Hedgehog)$/, (m, e, n) => `${e} ${NO[n]}`],
+  [/^Discovered (\d+) of (\d+): (.*)$/, "Oppdaget $1 av $2: $3"], [/^✨ You made (.+?)!( New discovery!)?$/, (m, a, n) => `✨ Du laget ${a}!${n ? " Ny oppdagelse!" : ""}`], [/^Hmm, (.+) doesn’t make a stable molecule in this set\. (.+)$/, "Hmm, $1 blir ikke et stabilt molekyl i dette settet. Atomer binder seg i faste antall: oksygen lager vanligvis 2 bindinger, hydrogen 1 og karbon 4."],
+  [/^Line (\d+): (.+)$/, (m, l, e) => `Linje ${l}: ${tr(e)}`], [/^Done! (\d+) lines drawn\.$/, "Ferdig! $1 streker tegnet."], [/^Saved “(.+)”!$/, "Lagret «$1»!"], [/^Playing “(.+)”\.$/, "Spiller «$1»."], [/^(\d+) lines$/, "$1 linjer"],
+  [/^I don’t understand “(.+)”\.$/, "Jeg forstår ikke «$1»."], [/^I don’t know the command “(.+)”\.$/, "Jeg kjenner ikke kommandoen «$1»."], [/^I don’t know what “(.+)” is yet\. Set it first, like (.+)\.$/, "Jeg vet ikke hva «$1» er ennå. Gi den en verdi først, som $2."], [/^I can’t read “(.+)”\.$/, "Jeg klarer ikke å lese «$1»."], [/^I don’t know the color “(.+)”\. (.+)$/, "Jeg kjenner ikke fargen «$1». Prøv red, orange, yellow, green, cyan, blue, purple, pink eller white."],
+  [/^(\d+) BPM$/, "$1 BPM"], [/^(.+) step (\d+)$/, "$1 steg $2"], [/^Letter (\d+)$/, "Bokstav $1"], [/^Say it in (.+)$/, (m, a) => `Si det på ${tr(a).toLowerCase()}`],
+  [/^Created (.+)\. They can log in now\.$/, "Laget $1. De kan logge inn nå."], [/^New password for (.+)$/, "Nytt passord for $1"],
+  [/^(.+) from (.+)$/, (m, a, b) => NO[a] ? `${NO[a]} fra ${b}` : null],
+  [/^(.+) is an insulator(.*)$/, null]
+];
+const trMemo = new Map();
+function trCore(s){
+  const t = s.trim(); if(!t) return s;
+  const i = s.indexOf(t), lead = s.slice(0, i), tail = s.slice(i + t.length);
+  if(Object.prototype.hasOwnProperty.call(NO, t)) return lead + NO[t] + tail;
+  for(const [re, f] of NO_PAT){ if(!f) continue; const m = t.match(re); if(m){ const r = typeof f === "string" ? t.replace(re, f) : f(...m); if(r != null) return lead + r + tail; } }
+  const parts = t.split(/(?<=[.!?])\s+(?=[A-Z“✅❌⭐0-9])/);
+  if(parts.length > 1){ const tp = parts.map(p => trCore(p)); if(tp.some((x, k) => x !== parts[k])) return lead + tp.join(" ") + tail; }
+  return s;
+}
+function tr(s){
+  if(LANG !== "no" || typeof s !== "string" || !/[A-Za-z]/.test(s)) return s;
+  const hit = trMemo.get(s); if(hit !== undefined) return hit;
+  const out = trCore(s); if(trMemo.size > 8000) trMemo.clear(); trMemo.set(s, out); return out;
+}
+function trQ(q){ if(LANG !== "no") return q; return Object.assign({}, q, { q:tr(q.q), choices:q.choices.map(tr), answer:tr(q.answer), ex:tr(q.ex) }); }
+if(LANG === "no"){
+  const P = CanvasRenderingContext2D.prototype, F = P.fillText, S = P.strokeText, M = P.measureText;
+  P.fillText = function(t, ...a){ return F.call(this, tr(String(t)), ...a); };
+  P.strokeText = function(t, ...a){ return S.call(this, tr(String(t)), ...a); };
+  P.measureText = function(t){ return M.call(this, tr(String(t))); };
+}
+const TR_SKIP = "pre, textarea, input, script, style, svg, [data-notr]";
+function trNode(n){
+  if(n.nodeType === 3){ const p = n.parentElement; if(!p || p.closest(TR_SKIP)) return; const v = n.nodeValue, t = tr(v); if(t !== v) n.nodeValue = t; return; }
+  if(n.nodeType !== 1 || n.closest(TR_SKIP)) return;
+  for(const a of ["placeholder","aria-label","title"]){ const v = n.getAttribute(a); if(v){ const t = tr(v); if(t !== v) n.setAttribute(a, t); } }
+  n.childNodes.forEach(trNode);
+}
+function startTranslation(){
+  if(LANG !== "no") return;
+  trNode(document.body);
+  new MutationObserver(ms => { for(const m of ms){ if(m.type === "characterData") trNode(m.target); else if(m.type === "attributes") trNode(m.target); else m.addedNodes.forEach(trNode); } })
+    .observe(document.body, { subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:["placeholder","aria-label","title"] });
+}
+function setLang(l){
+  try { localStorage.setItem("star-hopper-lang", l); } catch(e){}
+  try { saveProfile(); if(typeof cloudSaveNow === "function" && account && !account.offline) cloudSaveNow(); } catch(e){}
+  setTimeout(() => location.reload(), 350);
+}
+document.querySelectorAll(".lang-btn").forEach(b => { b.setAttribute("data-notr", ""); b.textContent = LANG === "no" ? "🇬🇧 English" : "🇳🇴 Norsk"; b.addEventListener("click", () => setLang(LANG === "no" ? "en" : "no")); });
+
 const $ = id => document.getElementById(id);
 const R = (a,b) => a + Math.floor(Math.random()*(b-a+1));
 const shuffle = arr => { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; };
@@ -2639,7 +2860,7 @@ function sortUI(lv, subj){
   setQ(`${L.theme.subject} gate · sort it`, s.p);
   const grid = el("div","sortgrid");
   const btns = shuffle([...yes, ...no]).map(w => {
-    const b = el("button","choice",w); b.setAttribute("aria-pressed","false");
+    const b = el("button","choice",w); b.dataset.v = w; b.setAttribute("aria-pressed","false");
     b.addEventListener("click", () => { b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); beep(650,0.04,"triangle",0.03); });
     grid.appendChild(b); return b;
   });
@@ -2647,7 +2868,7 @@ function sortUI(lv, subj){
   go.addEventListener("click", () => {
     let ok = true;
     btns.forEach(b => {
-      const want = yes.includes(b.textContent), got = b.getAttribute("aria-pressed") === "true";
+      const want = yes.includes(b.dataset.v), got = b.getAttribute("aria-pressed") === "true";
       b.disabled = true;
       if(want) b.classList.add(got ? "right" : "wrong");
       else if(got) b.classList.add("wrong");
@@ -4041,7 +4262,7 @@ function makeQ(subj, d){
   let q;
   for(let i=0;i<14;i++){ q = rawQ(subj, d); if(!isSeen(subj, q.q + (q.code || ""))) break; }
   markSeen(subj, q.q + (q.code || ""));
-  return q;
+  return trQ(q);
 }
 PLANETS.forEach(p => { p.gen = d => makeQ(p.id, d); });
 /* ---- generic order / match puzzles for the extra worlds ---- */
@@ -5887,7 +6108,7 @@ async function safeGet(path){
   return null;
 }
 function setSync(st){
-  $("syncState").textContent = { saved:"☁️ Saved", saving:"☁️ Saving…", error:"⚠️ Not saved yet, retrying", offline:"📱 Saved on this device only" }[st] || "";
+  $("syncState").textContent = { saved:"☁️ Saved", saving:"☁️ Saving…", error:"⚠️ Not saved yet, retrying", offline:"" }[st] || "";
 }
 function cloudSave(){
   if(!account || account.offline || !DB) return;
@@ -6065,6 +6286,7 @@ $("saveLoad").addEventListener("click", () => {
 loadProfile(null);
 baseInit();
 loadProgress(null);
+startTranslation();
 bootAccounts();
 })();
 </script>
